@@ -56,19 +56,29 @@
     <input type="file" id="fileInput" name="imgs" accept="image/*" multiple/>
     <label for="fileInput" class="button">Select Image</label>
   </div>
-
+  <div id="file-names">Files Selected: </div>
   <div class="container">
-    <input id="upload_btn" type="submit">
-    <label for="upload_btn" class="button">Upload Image</label>
+    <input id="upload_btn" class="button" type="submit">
   </div>
+
+    
   </form>
-  
+  <div>
+      <button class="button" onclick=modify()>Manage Uploads</button>
+  </div>
   <a href = "/logout">logout</a>
-  <div id="file-names">File names: </div>
+  
 
 
 </body>
   <script>
+
+    function modify(){
+      
+      window.location.href = '/modify/{{username}}'
+      
+    }
+    
     var input = document.getElementById( 'fileInput' );
     var infoArea = document.getElementById( 'file-names' );
 

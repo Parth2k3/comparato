@@ -11,12 +11,16 @@ engine = create_engine(db_connection_string,
 
 def signup(user, pw, mail):
   with engine.connect() as conn:
-    conn.execute(text('INSERT into users(`username`,`pass`,`mail`) values (:user, :pw, :mail)'), {
-      "user": user,
-      "pw": pw,
-      "mail": mail
-    })
+    conn.execute(
+      text(
+        'INSERT into users(`username`,`pass`,`mail`) values (:user, :pw, :mail)'
+      ), {
+        "user": user,
+        "pw": pw,
+        "mail": mail
+      })
     return 'success'
+
 
 def login_user(username, password):
   with engine.connect() as conn:
@@ -63,13 +67,20 @@ def getimages(username):
       return list(rows)
 
 
-def incScore(img_name, i1, i2, length):
+def incScore(img_name, i1, i2, length, user2):
 
   with engine.connect() as conn:
     conn.execute(
       text("UPDATE images SET score = score + 1 WHERE img_name = :img_name"),
       {"img_name": img_name})
-
+    if user2:
+      conn.execute(
+        text(
+          "INSERT INTO OtherVoters(`img_name`, `voter_name`) VALUES (:img_name, :user2)"
+        ), {
+          "img_name": img_name,
+          "user2": user2
+        })
   if i2 == length - 1:
     i1 = i1 + 1
     i2 = i1 + 1
@@ -78,3 +89,52 @@ def incScore(img_name, i1, i2, length):
   else:
     i2 = i2 + 1
   return [i1, i2]
+
+
+def getResult(user):
+  with engine.connect() as conn:
+    result = conn.execute(
+      text("SELECT * from images WHERE user = :user ORDER BY score DESC"),
+      {'user': user})
+    rows = result.all()
+    if len(rows) == 0:
+      return None
+    else:
+      return list(rows)
+
+
+def modifyName(user, img_name, newname):
+  with engine.connect() as conn:
+    conn.execute(
+      text(
+        "UPDATE images SET img_name = :newname WHERE user = :user AND img_name = :img_name"
+      ), {
+        "img_name": img_name,
+        "user": user,
+        "newname": newname
+      })
+  return 'success'
+
+
+def deleteImage(id, img_name):
+  with engine.connect() as conn:
+    conn.execute(
+      text("DELETE FROM images WHERE user = :id AND img_name = :img_name"), {
+        "id": id,
+        "img_name": img_name
+      })
+
+  return 'success'
+
+def getImageByName(user, name):
+  with engine.connect() as conn:
+    result = conn.execute(text("SELECT * from images WHERE user = :user AND img_name = :img_name"), {
+        "user": user,
+        "img_name": name
+      })
+
+    rows = result.all()
+    if len(rows) == 0:
+      return None
+    else:
+      return list(rows)

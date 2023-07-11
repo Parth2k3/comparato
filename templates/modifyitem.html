@@ -1,0 +1,11 @@
+<div>
+  <img style="width:100px; height:100px" src="data:image/*;charset=utf-8;base64,{{image[0]}}" alt="Image 2">
+  
+  <h4>Image Name: {{image[2]}}</h4>
+  <a href="/modifyname/{{user}}/{{image[2]}}">Edit Name</a>
+  <input style="display: none;" id=hidden class="inputfld" type="text" name="newname">
+  <button style="display: none;" onclick=submit() id=hidden>SUBMIT</button>
+  <a href="/modifyimage/{{user}}/{{image[2]}}">Delete Image</a>
+  <br>
+  <br>
+</div>
