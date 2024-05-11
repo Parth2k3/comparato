@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 50px;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Here's The Result: </h1>
+  <div class="container">
+    {% for image in sortedImages %}
+      {% include 'imageitem.html' %}
+    {% endfor %}
+  </div>
+</body>
+</html>
